@@ -28,7 +28,8 @@ export const Product = () => {
   };
 
   const addtowish = (name, id) => {
-    const wishdata = { name, id };
+    const wishdata = { name, id, stock: true };
+
     setWishlist([...wishlistdata, wishdata]);
     increasewish(1);
     const newproductData = Productlist.map((data) =>
