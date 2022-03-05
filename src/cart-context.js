@@ -15,7 +15,9 @@ const CartProvider = ({ children }) => {
       setCartdata([...cartdata, newObj]);
     } else {
       let newCartList = cartdata.map((item, index) =>
-        index === itemIndex ? { ...item, qty: item.qty + 1 } : item
+        index === itemIndex
+          ? { ...item, qty: item.qty + 1, maxqty: item.maxqty - 1 }
+          : item
       );
       setCartdata(newCartList);
     }

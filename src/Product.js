@@ -60,7 +60,9 @@ export const Product = () => {
                       Add to Wishlist
                     </button>
                   ) : (
-                    <button>Remove from Wishlist</button>
+                    <button onClick={() => removewish(data.name, data.id)}>
+                      Remove from Wishlist
+                    </button>
                   )}
                 </li>
               )}
