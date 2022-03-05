@@ -2,47 +2,22 @@ import { useCart } from "./cart-context";
 import { useProduct } from "./product-context";
 
 export const Cart = () => {
-  const { cartdata, setCartdata, increaseCount } = useCart();
-  const { Productlist, setproduct } = useProduct();
-  const addBack = (id, qty) => {
-    const newproductData = Productlist.map((data) =>
-      data.id === id ? { ...data, qty: data.qty + qty } : data
-    );
-    setproduct(newproductData);
+  const { cartdata, cartFilter, cartUpdate } = useCart();
+  const { releaseQuantity, red, inc } = useProduct();
 
-    const newCartData = cartdata.filter((data) => data.id !== id);
-    setCartdata(newCartData);
-    increaseCount(-qty);
+  const addBack = (id, qty) => {
+    releaseQuantity(id, qty);
+    cartFilter(id, qty);
   };
 
   const increase = (id) => {
-    const newproductData = Productlist.map((data) =>
-      data.id === id ? { ...data, qty: data.qty - 1 } : data
-    );
-    setproduct(newproductData);
-
-    const newCartList = cartdata.map((item) =>
-      item.id === id
-        ? { ...item, qty: item.qty + 1, maxqty: item.maxqty - 1 }
-        : item
-    );
-    setCartdata(newCartList);
-    increaseCount(1);
+    red(id);
+    cartUpdate(id, 1);
   };
 
   const decrease = (id) => {
-    const newproductData = Productlist.map((data) =>
-      data.id === id ? { ...data, qty: data.qty + 1 } : data
-    );
-    setproduct(newproductData);
-
-    const newCartList = cartdata.map((item) =>
-      item.id === id
-        ? { ...item, qty: item.qty - 1, maxqty: item.maxqty + 1 }
-        : item
-    );
-    setCartdata(newCartList);
-    increaseCount(-1);
+    inc(id);
+    cartUpdate(id, -1);
   };
   return (
     <div>

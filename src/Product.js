@@ -3,50 +3,23 @@ import { useProduct } from "./product-context";
 import { useWishlist } from "./wishlist-context";
 
 export const Product = () => {
-  const { Productlist, setproduct } = useProduct();
-  const { cartdata, setCartdata, count, increaseCount } = useCart();
-  const { wishlistdata, setWishlist, increasewish, wishcount } = useWishlist();
-
-  const exists = (id) => cartdata.findIndex((obj) => obj.id === id);
+  const { Productlist, red, wishupdate } = useProduct();
+  const { cartupdate, count } = useCart();
+  const { delwish, wishcount, addwish } = useWishlist();
 
   const reduceQuantity = (id, name, qty) => {
-    const newproductData = Productlist.map((data) =>
-      data.id === id ? { ...data, qty: data.qty - 1 } : data
-    );
-    let itemIndex = exists(id);
-    if (itemIndex === -1) {
-      let newObj = { name: name, qty: 1, id: id, maxqty: qty - 1 };
-      setCartdata([...cartdata, newObj]);
-    } else {
-      let newCartList = cartdata.map((item, index) =>
-        index === itemIndex ? { ...item, qty: item.qty + 1 } : item
-      );
-      setCartdata(newCartList);
-    }
-    setproduct(newproductData);
-    increaseCount(1);
+    red(id);
+    cartupdate(id, name, qty);
   };
 
   const addtowish = (name, id) => {
-    const wishdata = { name, id, stock: true };
-
-    setWishlist([...wishlistdata, wishdata]);
-    increasewish(1);
-    const newproductData = Productlist.map((data) =>
-      data.id === id ? { ...data, wishlist: !data.wishlist } : data
-    );
-    setproduct(newproductData);
+    addwish(name, id);
+    wishupdate(id);
   };
 
   const removewish = (name, id) => {
-    const newproductData = Productlist.map((data) =>
-      data.id === id ? { ...data, wishlist: !data.wishlist } : data
-    );
-    setproduct(newproductData);
-    increasewish(-1);
-
-    const newWishlist = wishlistdata.filter((data) => data.id !== id);
-    setWishlist(newWishlist);
+    wishupdate(id);
+    delwish(id);
   };
 
   return (
