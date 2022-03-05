@@ -1,4 +1,3 @@
-import { v4 } from "uuid";
 import { useCart } from "./cart-context";
 import { useProduct } from "./product-context";
 
@@ -8,13 +7,13 @@ export const Product = () => {
 
   const exists = (id) => cartdata.findIndex((obj) => obj.id === id);
 
-  const reduceQuantity = (id, name) => {
+  const reduceQuantity = (id, name, qty) => {
     const newproductData = Productlist.map((data) =>
       data.id === id ? { ...data, qty: data.qty - 1 } : data
     );
     let itemIndex = exists(id);
     if (itemIndex === -1) {
-      let newObj = { name: name, qty: 1, id: id };
+      let newObj = { name: name, qty: 1, id: id, maxqty: qty - 1 };
       setCartdata([...cartdata, newObj]);
     } else {
       let newCartList = cartdata.map((item, index) =>
@@ -23,7 +22,7 @@ export const Product = () => {
       setCartdata(newCartList);
     }
     setproduct(newproductData);
-    increaseCount();
+    increaseCount(1);
   };
 
   return (
@@ -38,7 +37,9 @@ export const Product = () => {
                 <li key={data.id}>
                   {" "}
                   {data.name}{" "}
-                  <button onClick={() => reduceQuantity(data.id, data.name)}>
+                  <button
+                    onClick={() => reduceQuantity(data.id, data.name, data.qty)}
+                  >
                     {" "}
                     Add to Cart
                   </button>
